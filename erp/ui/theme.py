@@ -74,7 +74,16 @@ div[data-testid="stDataFrame"] {{ border-radius: 10px; overflow: hidden; border:
 div[data-testid="stTable"] {{ border-radius: 10px; overflow: hidden; }}
 div[data-baseweb="input"] > div, div[data-baseweb="select"] > div,
 div[data-baseweb="textarea"] > div {{
-    min-height: 42px; border-radius: 8px !important; border-color: #C9D3E1 !important;
+    min-height: 42px; border-radius: 8px !important;
+    border: 1px solid #A3B0C2 !important; background: #FFFFFF;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}}
+div[data-baseweb="input"]:focus-within > div,
+div[data-baseweb="select"]:focus-within > div,
+div[data-baseweb="textarea"]:focus-within > div,
+div[data-testid="stTextInputRootElement"]:focus-within {{
+    border-color: {ORANGE} !important;
+    box-shadow: 0 0 0 2px rgba(255,122,0,.18) !important;
 }}
 div[data-baseweb="textarea"] > div {{ min-height: 84px; }}
 label[data-testid="stWidgetLabel"] p {{ color: {NAVY}; font-size: 13px; font-weight: 600; }}

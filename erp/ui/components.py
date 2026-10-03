@@ -15,11 +15,11 @@ def page_header(title: str, subtitle: str = "", eyebrow: str = "") -> None:
 
 
 def kpi_card(label: str, value: str, sub: str = "", variant: str = "") -> None:
+    subtitle = f'<div class="sub">{escape(sub)}</div>' if sub else ""
     st.markdown(
         f"""<div class="kpi {escape(variant)}">
             <div class="label">{escape(label)}</div>
-            <div class="value">{escape(value)}</div>
-            {f'<div class="sub">{escape(sub)}</div>' if sub else ''}
+            <div class="value">{escape(value)}</div>{subtitle}
         </div>""",
         unsafe_allow_html=True,
     )

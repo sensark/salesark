@@ -5,6 +5,8 @@ backgroundColor = "#F4F6FA"
 secondaryBackgroundColor = "#FFFFFF"
 textColor = "#0B1F3A"
 font = "sans serif"
+borderColor = "#A3B0C2"
+showWidgetBorder = true
 
 [client]
 toolbarMode = "minimal"

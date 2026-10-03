@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+  <body
+    style="
+      margin: 0;
+      padding: 24px 12px;
+      background: #f4f6fa;
+      font-family:
+        Segoe UI,
+        Arial,
+        sans-serif;
+      color: #0b1f3a;
+    "
+  >
+    <table
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background: #f4f6fa; padding: 0"
+    >
+      <tr>
+        <td align="center">
+          <table
+            width="640"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              width: 100%;
+              max-width: 640px;
+              background: #fff;
+              border: 1px solid #e0e6ef;
+              border-radius: 8px;
+              overflow: hidden;
+            "
+          >
+            <tr>
+              <td
+                style="
+                  background: #0b1f3a;
+                  padding: 22px 28px;
+                  border-bottom: 4px solid #ff7a00;
+                "
+              >
+                <div
+                  style="
+                    color: #ff7a00;
+                    font-size: 13px;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                  "
+                >
+                  Approval Required
+                </div>
+                <div
+                  style="
+                    color: #ffffff;
+                    font-size: 22px;
+                    font-weight: 700;
+                    margin-top: 6px;
+                  "
+                >
+                  New order {{ order.order_no }}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="padding: 24px 28px; font-size: 14px; line-height: 1.55"
+              >
+                <strong>Customer:</strong> {{ order.customer.name }}{% if
+                order.customer.company %} ({{ order.customer.company }}){% endif
+                %}<br />
+                <strong>Sales person:</strong> {{ order.sales_person.name }}<br />
+                <strong>Items:</strong> {{ order.items|length }}<br />
+                <strong>Approver:</strong> {{ 'Admin / Owner' if
+                order.required_approver_role == 'admin' else 'Sales Manager'
+                }}<br />
+                <strong>Discount:</strong> INR {{
+                "%.2f"|format(order.discount_total) }}<br />
+                <strong>GST:</strong> INR {{ "%.2f"|format(order.tax_total)
+                }}<br />
+                <strong>Order total:</strong>
+                <span style="color: #ff7a00; font-weight: 700"
+                  >INR {{ "%.2f"|format(order.total) }}</span
+                >
+                {% if order.credit_limit_exceeded %}
+                <p
+                  style="
+                    background: #fff4e5;
+                    border-left: 4px solid #ff7a00;
+                    padding: 10px 14px;
+                    margin-top: 16px;
+                  "
+                >
+                  Customer credit limit review required.
+                </p>
+                {% endif %} {% if low_stock %}
+                <p
+                  style="
+                    background: #fff4e5;
+                    border-left: 4px solid #ff7a00;
+                    padding: 10px 14px;
+                    margin-top: 16px;
+                  "
+                >
+                  Low stock on: {{ low_stock|join(", ") }}
+                </p>
+                {% endif %}
+                <p style="margin-top: 18px">
+                  Review this order in Krypton Sales ERP. Stock is deducted when
+                  it is approved.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  background: #f7f9fc;
+                  border-top: 1px solid #e0e6ef;
+                  padding: 14px 28px;
+                  color: #5b6b82;
+                  font-size: 11px;
+                "
+              >
+                {{ company }} · Internal approval notice
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

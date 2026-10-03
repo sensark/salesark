@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+  <body
+    style="
+      margin: 0;
+      padding: 24px 12px;
+      background: #f4f6fa;
+      font-family:
+        Segoe UI,
+        Arial,
+        sans-serif;
+      color: #0b1f3a;
+    "
+  >
+    <table
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background: #f4f6fa; padding: 0"
+    >
+      <tr>
+        <td align="center">
+          <table
+            width="640"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              width: 100%;
+              max-width: 640px;
+              background: #fff;
+              border: 1px solid #e0e6ef;
+              border-radius: 8px;
+              overflow: hidden;
+            "
+          >
+            <tr>
+              <td
+                style="
+                  background: #0b1f3a;
+                  padding: 22px 28px;
+                  border-bottom: 4px solid #ff7a00;
+                "
+              >
+                <div
+                  style="
+                    color: #ff7a00;
+                    font-size: 13px;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                  "
+                >
+                  {{ company }}
+                </div>
+                <div
+                  style="
+                    color: #ffffff;
+                    font-size: 22px;
+                    font-weight: 700;
+                    margin-top: 6px;
+                  "
+                >
+                  Order Confirmed
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 24px 28px">
+                <p style="font-size: 15px">Dear {{ order.customer.name }},</p>
+                <p style="font-size: 15px; line-height: 1.6">
+                  Thank you for your order.
+                  <strong>{{ order.order_no }}</strong>
+                  has been approved and is being prepared for dispatch.
+                </p>
+                <table
+                  width="100%"
+                  cellpadding="8"
+                  cellspacing="0"
+                  style="
+                    border-collapse: collapse;
+                    font-size: 13px;
+                    margin-top: 16px;
+                  "
+                >
+                  <tr style="background: #0b1f3a; color: #ffffff">
+                    <th align="left">Product</th>
+                    <th align="left">HSN/SAC</th>
+                    <th align="right">Qty</th>
+                    <th align="right">Rate (INR)</th>
+                    <th align="right">Discount</th>
+                    <th align="right">Taxable (INR)</th>
+                    <th align="right">GST (INR)</th>
+                    <th align="right">Line Total (INR)</th>
+                  </tr>
+                  {% for item in order.items %}
+                  <tr style="border-bottom: 1px solid #e3e8f0">
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.hsn_sac or '' }}</td>
+                    <td align="right">{{ item.qty }}</td>
+                    <td align="right">{{ "%.2f"|format(item.unit_price) }}</td>
+                    <td align="right">
+                      {{ "%.0f"|format(item.discount_pct) }}%
+                    </td>
+                    <td align="right">
+                      {{ "%.2f"|format(item.taxable_amount) }}
+                    </td>
+                    <td align="right">
+                      {{ "%.2f"|format(item.cgst_amount + item.sgst_amount +
+                      item.igst_amount + item.cess_amount) }}
+                    </td>
+                    <td align="right">
+                      {{ "%.2f"|format(item.taxable_amount + item.cgst_amount +
+                      item.sgst_amount + item.igst_amount + item.cess_amount) }}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </table>
+                <table
+                  width="100%"
+                  cellpadding="4"
+                  cellspacing="0"
+                  style="font-size: 14px; margin-top: 16px"
+                >
+                  <tr>
+                    <td align="right">Subtotal:</td>
+                    <td align="right" width="140">
+                      INR {{ "%.2f"|format(order.subtotal) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">You saved:</td>
+                    <td align="right" style="color: #1e9e5a">
+                      -INR {{ "%.2f"|format(order.discount_total) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">Taxable value:</td>
+                    <td align="right">
+                      INR {{ "%.2f"|format(order.taxable_total) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">CGST / SGST:</td>
+                    <td align="right">
+                      INR {{ "%.2f"|format(order.cgst_total) }} / {{
+                      "%.2f"|format(order.sgst_total) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">IGST / Cess:</td>
+                    <td align="right">
+                      INR {{ "%.2f"|format(order.igst_total) }} / {{
+                      "%.2f"|format(order.cess_total) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right" style="font-size: 17px; font-weight: 700">
+                      Grand total:
+                    </td>
+                    <td
+                      align="right"
+                      style="font-size: 17px; font-weight: 700; color: #ff7a00"
+                    >
+                      INR {{ "%.2f"|format(order.total) }}
+                    </td>
+                  </tr>
+                </table>
+                <p style="font-size: 14px; line-height: 1.6; margin-top: 24px">
+                  Questions about this order? Contact {{ order.sales_person.name
+                  }} at {{ order.sales_person.email }}.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  background: #f7f9fc;
+                  border-top: 1px solid #e0e6ef;
+                  color: #5b6b82;
+                  font-size: 11px;
+                  padding: 14px 28px;
+                "
+              >
+                {{ company }} &middot; This is an automated message.
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

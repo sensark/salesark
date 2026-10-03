@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <body
+    style="
+      margin: 0;
+      padding: 24px 12px;
+      background: #f4f6fa;
+      font-family:
+        Segoe UI,
+        Arial,
+        sans-serif;
+      color: #0b1f3a;
+    "
+  >
+    <table
+      width="640"
+      align="center"
+      cellpadding="0"
+      cellspacing="0"
+      style="
+        width: 100%;
+        max-width: 640px;
+        background: #fff;
+        border: 1px solid #e0e6ef;
+        border-radius: 8px;
+        overflow: hidden;
+      "
+    >
+      <tr>
+        <td
+          style="
+            background: #0b1f3a;
+            border-bottom: 4px solid #ff7a00;
+            padding: 22px 28px;
+          "
+        >
+          <div
+            style="color: #ff7a00; font-size: 12px; text-transform: uppercase"
+          >
+            {{ company }}
+          </div>
+          <h1 style="color: #fff; font-size: 22px; margin: 8px 0 0">
+            Sales Quotation {{ quotation.quotation_no }}
+          </h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 24px 28px">
+          <p>Dear {{ customer.name }},</p>
+          <p>
+            Please find your quotation{% if quotation.valid_until %}, valid
+            until {{ quotation.valid_until.strftime('%d %b %Y') }}{% endif %}.
+          </p>
+          <table
+            width="100%"
+            cellpadding="8"
+            cellspacing="0"
+            style="border-collapse: collapse; font-size: 13px"
+          >
+            <tr style="background: #0b1f3a; color: #fff">
+              <th align="left">Product</th>
+              <th align="right">Qty</th>
+              <th align="right">Rate (INR)</th>
+              <th align="right">Taxable (INR)</th>
+              <th align="right">Total (INR)</th>
+            </tr>
+            {% for item in items %}
+            <tr style="border-bottom: 1px solid #e3e8f0">
+              <td>{{ item.description }}</td>
+              <td align="right">{{ item.qty }}</td>
+              <td align="right">{{ '%.2f'|format(item.unit_price) }}</td>
+              <td align="right">{{ '%.2f'|format(item.taxable_amount) }}</td>
+              <td align="right">{{ '%.2f'|format(item.line_total) }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+          <p style="text-align: right; line-height: 1.8">
+            Discount: -INR {{ '%.2f'|format(quotation.discount_total) }}<br />GST:
+            INR {{ '%.2f'|format(quotation.tax_total) }}<br /><strong
+              style="font-size: 18px; color: #ff7a00"
+              >Total: INR {{ '%.2f'|format(quotation.total) }}</strong
+            >
+          </p>
+          {% if quotation.terms %}
+          <p><strong>Terms:</strong> {{ quotation.terms }}</p>
+          {% endif %} {% if quotation.notes %}
+          <p>{{ quotation.notes }}</p>
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td
+          style="
+            background: #f7f9fc;
+            border-top: 1px solid #e0e6ef;
+            padding: 14px 28px;
+            color: #5b6b82;
+            font-size: 11px;
+          "
+        >
+          {{ company }} · Please contact your sales representative with
+          questions.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

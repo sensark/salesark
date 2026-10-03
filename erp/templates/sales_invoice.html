@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+  <body
+    style="
+      margin: 0;
+      padding: 24px 12px;
+      background: #f4f6fa;
+      font-family:
+        Segoe UI,
+        Arial,
+        sans-serif;
+      color: #0b1f3a;
+    "
+  >
+    <table
+      width="640"
+      align="center"
+      cellpadding="0"
+      cellspacing="0"
+      style="
+        width: 100%;
+        max-width: 640px;
+        background: #fff;
+        border: 1px solid #e0e6ef;
+        border-radius: 8px;
+        overflow: hidden;
+      "
+    >
+      <tr>
+        <td
+          style="
+            background: #0b1f3a;
+            border-bottom: 4px solid #ff7a00;
+            padding: 22px 28px;
+          "
+        >
+          <div
+            style="color: #ff7a00; font-size: 12px; text-transform: uppercase"
+          >
+            {{ company }} · GST invoice
+          </div>
+          <h1 style="color: #fff; font-size: 22px; margin: 8px 0 0">
+            {{ invoice.invoice_no }}
+          </h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 24px 28px">
+          <table
+            width="100%"
+            cellpadding="4"
+            style="font-size: 14px; margin-bottom: 20px"
+          >
+            <tr>
+              <td>
+                <strong>Bill to</strong><br />{{ customer.name }}{% if
+                customer.company %}<br />{{ customer.company }}{% endif %}<br />{{
+                customer.address or '' }}<br />{{ customer.state or '' }} · {{
+                customer.country_code }}
+              </td>
+              <td align="right">
+                <strong>Invoice date</strong><br />{{
+                invoice.invoice_date.strftime('%d %b %Y') }}<br /><strong
+                  >Due date</strong
+                ><br />{{ invoice.due_date.strftime('%d %b %Y') if
+                invoice.due_date else 'On receipt' }}<br /><strong
+                  >Place of supply</strong
+                ><br />{{ invoice.place_of_supply_state or 'Export' }}
+              </td>
+            </tr>
+          </table>
+          <table
+            width="100%"
+            cellpadding="8"
+            cellspacing="0"
+            style="border-collapse: collapse; font-size: 13px"
+          >
+            <tr style="background: #0b1f3a; color: #fff">
+              <th align="left">Description</th>
+              <th align="left">HSN/SAC</th>
+              <th align="right">Qty</th>
+              <th align="right">Rate (INR)</th>
+              <th align="right">Taxable (INR)</th>
+              <th align="right">GST (INR)</th>
+              <th align="right">Total (INR)</th>
+            </tr>
+            {% for item in items %}
+            <tr style="border-bottom: 1px solid #e3e8f0">
+              <td>{{ item.description }}</td>
+              <td>{{ item.hsn_sac or '' }}</td>
+              <td align="right">{{ item.qty }}</td>
+              <td align="right">{{ '%.2f'|format(item.unit_price) }}</td>
+              <td align="right">{{ '%.2f'|format(item.taxable_amount) }}</td>
+              <td align="right">
+                {{ '%.2f'|format(item.cgst_amount + item.sgst_amount +
+                item.igst_amount + item.cess_amount) }}
+              </td>
+              <td align="right">{{ '%.2f'|format(item.line_total) }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+          <table
+            width="100%"
+            cellpadding="4"
+            style="font-size: 14px; margin-top: 18px"
+          >
+            <tr>
+              <td align="right">Taxable value</td>
+              <td width="150" align="right">
+                INR {{ '%.2f'|format(invoice.taxable_total) }}
+              </td>
+            </tr>
+            <tr>
+              <td align="right">CGST</td>
+              <td align="right">INR {{ '%.2f'|format(invoice.cgst_total) }}</td>
+            </tr>
+            <tr>
+              <td align="right">SGST</td>
+              <td align="right">INR {{ '%.2f'|format(invoice.sgst_total) }}</td>
+            </tr>
+            <tr>
+              <td align="right">IGST</td>
+              <td align="right">INR {{ '%.2f'|format(invoice.igst_total) }}</td>
+            </tr>
+            <tr>
+              <td align="right">Cess</td>
+              <td align="right">INR {{ '%.2f'|format(invoice.cess_total) }}</td>
+            </tr>
+            <tr>
+              <td align="right" style="font-size: 19px; font-weight: 700">
+                Grand total
+              </td>
+              <td
+                align="right"
+                style="font-size: 19px; font-weight: 700; color: #ff7a00"
+              >
+                INR {{ '%.2f'|format(invoice.total) }}
+              </td>
+            </tr>
+            <tr>
+              <td align="right">Paid · Credits · Debits</td>
+              <td align="right">
+                INR {{ '%.2f'|format(invoice.amount_paid) }} · {{
+                '%.2f'|format(invoice.credit_total) }} · {{
+                '%.2f'|format(invoice.debit_total) }}
+              </td>
+            </tr>
+            <tr>
+              <td align="right"><strong>Balance due</strong></td>
+              <td align="right">
+                <strong>INR {{ '%.2f'|format(invoice.balance_due) }}</strong>
+              </td>
+            </tr>
+          </table>
+          <p style="font-size: 12px; color: #5b6b82; margin-top: 24px">
+            Krypton Industries Limited · Tax invoice. Confirm the statutory
+            invoice particulars against company-approved master data.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td
+          style="
+            background: #f7f9fc;
+            border-top: 1px solid #e0e6ef;
+            padding: 14px 28px;
+            color: #5b6b82;
+            font-size: 11px;
+          "
+        >
+          {{ company }} · Tax invoice
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
